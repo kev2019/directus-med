@@ -13,6 +13,9 @@
       <v-select v-model="dropdownValue" :items="dropdownOptions">
         <template #prepend><v-icon name="person_search"/></template>
       </v-select>
+      <v-select v-model="dropdownValue2" :items="dropdownOptionsPatients">
+        <template #prepend><v-icon name="person_search"/></template>
+      </v-select>
     </template>
     <template #sidebar>
       <sidebar-detail icon="info_outline" :title="$t('information')" close>
@@ -39,17 +42,22 @@
 
 <script>
 import { computed } from "@vue/composition-api";
-import { getCollectionData, getVisibleCollections } from "./composables";
+import {
+  getCollectionData,
+  getVisibleCollections,
+  getItem,
+} from "./composables";
 
 export default {
   inject: ["system"],
   async mounted() {
     console.log("option api", this.system);
+    console.log(await getCollectionData(this.system, { table: "patients" }));
 
     // console.log(this.system.useCollectionsStore().getCollection("patients"));
     // console.log(this.getCollections());
 
-    // this.dropdownOptions = this.getCollections();
+    this.dropdownOptions = this.getCollections();
 
     // console.log(this.system.useCollectionsStore().getCollection("patients"));
     // console.log(
@@ -58,24 +66,40 @@ export default {
 
     // const result = JSON.stringify(await useAPI(this.system.api));
     // console.log(result);
-
-    console.log(getCollectionData(this.system, {table: "patients"}))
   },
+
   data() {
     return {
       title: "New Title",
       dropdownOptions: [],
       dropdownValue: "",
+      dropdownOptionsPatients: [],
+      dropdownValue2: "",
+      patient: [],
     };
+  },
+  watch: {
+    dropdownValue: function(newValue, oldValue) {
+      return getItem(this.system.api, {
+        table: this.dropdownValue.value,
+      }).then((result) => {
+        this.dropdownOptionsPatients = result.data.map((x) => {
+          return {
+            text: x.name,
+            value: x.id,
+          };
+        });
+      });
+    },
   },
   methods: {
     getCollections: function() {
       return getVisibleCollections(this.system).map((collection) => {
-          return {
-            text: collection.name,
-            value: collection.collection,
-          };
-        });
+        return {
+          text: collection.name,
+          value: collection.collection,
+        };
+      });
     },
   },
 };

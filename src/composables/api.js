@@ -1,13 +1,15 @@
-export function getCollectionData(system, { table }) {
+export async function getCollectionData(system, { table }) {
+  const items = await getItem(system.api, { table });
+
   return {
     collections: system.useCollectionsStore().getCollection(table),
     fields: system.useFieldsStore().getFieldsForCollection(table),
-    items: getItem(system.api, { table }),
+    items: items,
   };
 }
 
 export function getVisibleCollections(system) {
-  return this.system.useCollectionsStore().visibleCollections.value;
+  return system.useCollectionsStore().visibleCollections.value;
 }
 
 export async function getItem(api, { table }) {
