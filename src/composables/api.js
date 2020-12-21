@@ -6,6 +6,10 @@ export function getCollectionData(system, { table }) {
   };
 }
 
+export function getVisibleCollections(system) {
+  return this.system.useCollectionsStore().visibleCollections.value;
+}
+
 export async function getItem(api, { table }) {
   const endpoint = `/items/${table}`;
 
@@ -17,5 +21,3 @@ export async function getItem(api, { table }) {
     console.log(err);
   }
 }
-
-export async function save(api) {}

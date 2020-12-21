@@ -39,7 +39,7 @@
 
 <script>
 import { computed } from "@vue/composition-api";
-import { getCollectionData } from "./composables";
+import { getCollectionData, getVisibleCollections } from "./composables";
 
 export default {
   inject: ["system"],
@@ -70,9 +70,7 @@ export default {
   },
   methods: {
     getCollections: function() {
-      return this.system
-        .useCollectionsStore()
-        .visibleCollections.value.map((collection) => {
+      return getVisibleCollections(this.system).map((collection) => {
           return {
             text: collection.name,
             value: collection.collection,
