@@ -39,7 +39,7 @@
 
 <script>
 import { computed } from "@vue/composition-api";
-import { useAPI } from "./composables";
+import { getCollectionData } from "./composables";
 
 export default {
   inject: ["system"],
@@ -49,15 +49,17 @@ export default {
     // console.log(this.system.useCollectionsStore().getCollection("patients"));
     // console.log(this.getCollections());
 
-    this.dropdownOptions = this.getCollections();
+    // this.dropdownOptions = this.getCollections();
 
-    console.log(this.system.useCollectionsStore().getCollection("patients"));
-    console.log(
-      this.system.useFieldsStore().getFieldsForCollection("patients")
-    );
+    // console.log(this.system.useCollectionsStore().getCollection("patients"));
+    // console.log(
+    //   this.system.useFieldsStore().getFieldsForCollection("patients")
+    // );
 
-    const result = JSON.stringify(await useAPI(this.system.api));
-    console.log(result);
+    // const result = JSON.stringify(await useAPI(this.system.api));
+    // console.log(result);
+
+    console.log(getCollectionData(this.system, {table: "patients"}))
   },
   data() {
     return {
