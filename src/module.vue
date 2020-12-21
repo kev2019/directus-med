@@ -39,10 +39,11 @@
 
 <script>
 import { computed } from "@vue/composition-api";
+import { useAPI } from "./composables";
 
 export default {
   inject: ["system"],
-  mounted() {
+  async mounted() {
     console.log("option api", this.system);
 
     // console.log(this.system.useCollectionsStore().getCollection("patients"));
@@ -54,6 +55,9 @@ export default {
     console.log(
       this.system.useFieldsStore().getFieldsForCollection("patients")
     );
+
+    const result = JSON.stringify(await useAPI(this.system.api));
+    console.log(result);
   },
   data() {
     return {
@@ -89,5 +93,3 @@ export default {
   --v-button-color-disabled: var(--foreground-normal);
 }
 </style>
-
-import StyleComponent import Clock import Calendar Date
